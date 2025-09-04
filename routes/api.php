@@ -3,8 +3,10 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
-    return $request->user();
+use function Pest\Laravel\json;
+
+Route::get('/', function () {
+    return response()->json(['message' => 'Welcome to Dalil API']);
 });
 
 
