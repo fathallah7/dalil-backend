@@ -1,12 +1,15 @@
 <?php
 
+use App\Http\Controllers\LinkController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use function Pest\Laravel\json;
 
-Route::get('/', function () {
-    return response()->json(['message' => 'Welcome to Dalil API']);
+Route::middleware('auth:sanctum')->group(function () {
+
+    Route::apiResource('links', LinkController::class);
+
 });
 
 
