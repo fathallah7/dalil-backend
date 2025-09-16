@@ -10,7 +10,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::apiResource('links', LinkController::class);
 
-});
 
+});
 
 require __DIR__ . '/auth.php';
