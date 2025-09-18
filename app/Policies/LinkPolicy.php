@@ -21,7 +21,7 @@ class LinkPolicy
      */
     public function view(User $user, Link $link): bool
     {
-        return false;
+        return $link->user_id === $user->id;
     }
 
     /**

@@ -49,6 +49,7 @@ class LinkController extends Controller
      */
     public function show(Link $link)
     {
+        Gate::authorize('view', $link);
         return response()->json($link->load('tags'));
     }
 
