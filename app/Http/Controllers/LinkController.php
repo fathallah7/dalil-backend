@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\LinkCreateRequest;
 use App\Http\Requests\LinkUpdateRequest;
+use Illuminate\Support\Facades\Gate;
 use App\Models\Link;
 use App\Models\Tag;
 use Illuminate\Http\Request;
@@ -13,9 +14,9 @@ class LinkController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $links = Link::with('tags')->get();
+        $links = $request->user()->links()->with('tags')->get();
         return response()->json($links);
     }
 
@@ -24,7 +25,12 @@ class LinkController extends Controller
      */
     public function store(LinkCreateRequest $request)
     {
-        $link = Link::create($request->only(['title', 'url']));
+        $link = $request->user()->links()->create(
+            $request->only([
+                'title',
+                'url'
+            ])
+        );
 
         $tags = $request->input('tags', []);
         $tagsIds = [];
@@ -51,11 +57,12 @@ class LinkController extends Controller
      */
     public function update(LinkUpdateRequest $request, Link $link)
     {
+        Gate::authorize('update', $link);
+
         $link->update($request->only(['title', 'url']));
 
         $tags = $request->input('tags', []);
         $tagsIds = [];
-
         foreach ($tags as $tagName) {
             $tag = Tag::firstOrCreate(['name' => $tagName]);
             $tagsIds[] = $tag->id;
@@ -70,6 +77,8 @@ class LinkController extends Controller
      */
     public function destroy(Link $link)
     {
+        Gate::authorize('delete', $link);
+
         $link->delete();
         return response()->json(['message' => 'Link deleted successfully'], 204);
     }

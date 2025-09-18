@@ -8,10 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class Link extends Model
 {
     use HasFactory;
-    protected $fillable = ['title', 'url'];
+    protected $fillable = ['title', 'url' , 'user_id'];
 
     public function tags()
     {
         return $this->belongsToMany(Tag::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }
