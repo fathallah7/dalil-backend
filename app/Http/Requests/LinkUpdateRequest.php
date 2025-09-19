@@ -24,6 +24,7 @@ class LinkUpdateRequest extends FormRequest
         return [
             'title' => 'sometimes|required|string|max:255',
             'url' => 'sometimes|required|url|max:2048',
+            'emoji'=>'sometimes|required|string',
             'tags' => 'sometimes|array',
             'tags.*' => 'string|max:50',
         ];

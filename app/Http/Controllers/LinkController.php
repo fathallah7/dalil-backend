@@ -61,7 +61,7 @@ class LinkController extends Controller
     {
         Gate::authorize('update', $link);
 
-        $link->update($request->only(['title', 'url']));
+        $link->update($request->only(['title', 'url' ,'emoji']));
 
         $tags = $request->input('tags', []);
         $tagsIds = [];
