@@ -28,7 +28,8 @@ class LinkController extends Controller
         $link = $request->user()->links()->create(
             $request->only([
                 'title',
-                'url'
+                'url',
+                'emoji'
             ])
         );
 

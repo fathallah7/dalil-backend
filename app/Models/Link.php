@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Link extends Model
 {
     use HasFactory;
-    protected $fillable = ['title', 'url' , 'user_id'];
+    protected $fillable = ['title', 'url' , 'emoji','user_id'];
 
     public function tags()
     {
