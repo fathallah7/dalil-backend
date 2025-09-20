@@ -7,12 +7,9 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
-use Laravel\Socialite\Facades\Socialite;
 
 class GoogleController extends Controller
 {
-
-
     public function loginWithGoogle(Request $request)
     {
         $request->validate([
@@ -27,22 +24,20 @@ class GoogleController extends Controller
             return response()->json(['message' => 'Invalid Google token'], 401);
         }
 
-        $googleUser = $resp->json(); // 'sub', 'email', 'name', 'picture'
+        $googleUser = $resp->json();
 
-        $user = User::updateOrCreate(
-            ['provider' => 'google', 'provider_id' => $googleUser['sub']],
+        $user = User::firstOrCreate(
+            ['email' => $googleUser['email']],  
             [
-                'name' => $googleUser['name'] ?? null,
-                'email' => $googleUser['email'] ?? null,
+                'name'     => $googleUser['name'] ?? null,
                 'password' => bcrypt(Str::random(16)),
-                // 'avatar' => $googleUser['picture'] ?? null,
             ]
         );
 
         $token = $user->createToken('API Token')->plainTextToken;
 
         return response()->json([
-            'user' => $user,
+            'user'  => $user,
             'token' => $token,
         ]);
     }

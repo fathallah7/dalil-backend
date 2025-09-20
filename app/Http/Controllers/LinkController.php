@@ -42,7 +42,7 @@ class LinkController extends Controller
         }
 
         $link->tags()->sync($tagsIds);
-        return response()->json($link, 201);
+        return response()->json($link->load('tags'), 201);
     }
 
     /**
@@ -71,7 +71,7 @@ class LinkController extends Controller
         }
 
         $link->tags()->sync($tagsIds);
-        return response()->json($link);
+        return response()->json($link->load('tags'));
     }
 
     /**
